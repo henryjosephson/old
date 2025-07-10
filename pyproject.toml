@@ -1,0 +1,101 @@
+[project]
+name = "obsolete-law-destruction"
+version = "0.1.0"
+description = "Automated detection of outdated legal language in NY State Code using LLM analysis"
+readme = "readme.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "Henry Josephson"}
+]
+keywords = ["legal", "nlp", "llm", "new-york", "legislation", "modernization"]
+dependencies = [
+    "pandas>=2.0.3",
+    "python-dotenv>=1.0.1",
+    "requests>=2.32.4",
+]
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+[tool.ruff.lint]
+extend-select = [
+    "E4", "E7", "E9", "F",
+    # by default, ruff enables all F and a subset of E rules
+    # for a description of rulesets and examples, see:
+    # https://docs.astral.sh/ruff/rules/
+    "B",      # bugbear - identifies likely bugs
+    "C4",     # flake8-comprehensions - identifies redundant calls in comprehensions
+    "D",      # pydocstyle - requires docstrings on all public modules/functions/classes
+    "ERA",    # catches commented-out code
+    "FBT",    # flake8-boolean-trap
+    "I",      # isort
+    "ICN",    # flake8-import-conventions
+    "N801",   # pep8-naming - enforce ClassNamesStyle
+    "N804",   # pep8-naming - first arg of classmethod should be cls
+    "N805",   # pep8-naming - first arg of method should be self
+    "NPY",    # numpy-specific rules
+    "PD",     # pandas-vet
+    "PERF",   # performance anti-patterns
+    "PT",     # pytest style (no camelCase test names etc)
+    "PLR2004",# Pylint no magic values!
+    "PIE",    # misc good practices like forbidding `% formatting`
+    "PTH",    # prefer pathlib over os.path as seems to be the consensus
+    "RET",    # return checking
+    "RUF",    # ruff-specific rules like no noqa without codes
+    "Q",      # flake8-quotes - double quotes preferred (like black)
+    "S",      # flake8-bandit - security checks
+    "SIM",    # flake8-simplify
+    "TID",    # tidy imports - banned apis, require relative imports
+    "UP",     # pyupgrade - requires preferred syntax in newer python versions
+    "YTT",    # flake8-2020 - corrects code that doesn't anticipate 2 digit python minor version
+]
+
+ignore = [
+    "D415",   # allow first line of doctstrings to end without punctuation
+    "B905",    # won't work on python <3.10
+    "SIM115",  # conflicts with pathlib Path("...").open()
+]
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "S"]  # disable docstring & security checks in tests
+"__init__.py" = ["F401"]  # unused imports ok in __init__
+
+[tool.ruff.format]
+docstring-code-format = true  # Enable reformatting of code snippets in docstrings.
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
