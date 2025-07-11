@@ -9,9 +9,11 @@ authors = [
 ]
 keywords = ["legal", "nlp", "llm", "new-york", "legislation", "modernization"]
 dependencies = [
+    "ipykernel>=6.29.5",
     "pandas>=2.0.3",
     "python-dotenv>=1.0.1",
     "requests>=2.32.4",
+    "tqdm>=4.67.1",
 ]
 
 [tool.ruff]

@@ -4,8 +4,12 @@ import pandas as pd
 import json
 from dotenv import load_dotenv
 import time
+import tqdm
 from dataclasses import dataclass
 
+load_dotenv()
+
+OPENLEG_API_KEY = os.getenv("OPENLEG_API_KEY")
 
 @dataclass
 class LawDocument:
@@ -127,17 +131,13 @@ class NYLawsClient:
 
 
 def main():
-    load_dotenv()
-
-    OPENLEG_API_KEY = os.getenv("OPENLEG_API_KEY")
-
     client = NYLawsClient()
     laws = client.get_all_laws()
     law_ids = [pair[0] for pair in laws]
 
     laws = {}
 
-    for law_id in law_ids:
+    for law_id in tqdm(law_ids, desc="Processing laws"):
         laws[law_id] = client.get_law_structure(law_id, include_text=True)
 
     with open("laws.json", "w") as fp:
