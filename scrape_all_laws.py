@@ -1,7 +1,7 @@
 import json
 import os
 import time
-from dataclasses import dataclass
+from pathlib import Path
 
 import requests
 import tqdm
@@ -40,7 +40,7 @@ class NYLawsClient:
 
         return [(item["lawId"], item["name"]) for item in data["result"]["items"]]
 
-    def get_law_structure(self, law_id, include_text=False):
+    def get_law_structure(self, law_id, include_text):
         params = {"full": "true"} if include_text else {}
         data = self._make_request(f"laws/{law_id}", params=params)
 
@@ -69,14 +69,11 @@ class NYLawsClient:
                 section_texts = []
 
                 if "documents" in doc and "items" in doc["documents"]:
-                    for section in doc["documents"]["items"]:
-                        if (
-                            section.get("text")
-                            and len(section["text"]) > min_text_length
-                        ):
-                            section_texts.append(
-                                f"Section {section.get('docLevelId')}: {section['text']}"
-                            )
+                    section_texts.extend(
+                        f"Section {section.get('docLevelId')}: {section['text']}"
+                        for section in doc["documents"]["items"]
+                        if section.get("text") and len(section["text"]) > min_text_length
+                    )
 
                 full_text = article_text
                 if section_texts:
@@ -100,7 +97,6 @@ class NYLawsClient:
                 and doc.get("text")
                 and len(doc["text"]) > min_text_length * 3
             ):
-
                 chunks.append(
                     LawDocument(
                         law_id=law_id,
@@ -132,7 +128,7 @@ def main():
     for law_id in tqdm(law_ids, desc="Processing laws"):
         laws[law_id] = client.get_law_structure(law_id, include_text=True)
 
-    with open("laws.json", "w") as fp:
+    with Path("laws.json").open("w") as fp:
         json.dump(laws, fp)
 
 
