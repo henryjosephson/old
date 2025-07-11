@@ -1,25 +1,17 @@
-import requests
-import os
-import pandas as pd
 import json
-from dotenv import load_dotenv
+import os
 import time
-import tqdm
 from dataclasses import dataclass
+
+import requests
+import tqdm
+from dotenv import load_dotenv
+
+from utils import LawDocument
 
 load_dotenv()
 
 OPENLEG_API_KEY = os.getenv("OPENLEG_API_KEY")
-
-@dataclass
-class LawDocument:
-    law_id: str
-    location_id: str
-    title: str
-    doc_type: str
-    text: str
-    active_date: str
-    parent_context: str = ""
 
 
 class NYLawsClient:
